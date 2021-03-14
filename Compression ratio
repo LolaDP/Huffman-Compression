@@ -1,4 +1,4 @@
-## etape4
+## etape4 ##
 
 def taux_compression(fichier_txt):
     """methode qui prend en argument le nom d'un fichier texte et qui renvoit le taux de compression """
