@@ -1,0 +1,46 @@
+## etape 2 ##
+
+class Tree():
+    def __init__(self,label,frequence,left_child,right_child,code):
+        self.label=label
+        self.frequence=frequence
+        self.left_child=left_child
+        self.right_child=right_child
+        self.code=code    
+        
+    def getChildren (self):
+        """methode qui prend en parametre un Bnode et retourne la liste de ses descendants"""
+        children=[]
+        if self.right_child != None :
+            children.append(self.right_child)
+        if self.left_child != None:
+            children.append(self.left_child)
+        return children
+
+#creation liste des arbres associe a chaque caractere
+unAlpha=tri(unAlpha)
+listearbre=[]
+for i in unAlpha :
+    listearbre.append(Tree(i[0],i[1],None,None,None))   
+    
+def creaArbre (listearbre):
+    """methode qui cree a partir d'une liste d'arbre un arbre"""
+    while len(listearbre)!=1 :
+        #recherche des f min
+        min1=listearbre[0]
+        min2=listearbre[1]
+        for arbre in listearbre:
+            if arbre.frequence<min1.frequence and arbre!=min2:
+                min1=arbre
+            for abr in listearbre :
+                if abr.frequence<min2.frequence and abr!=min1:
+                    min2=abr
+        #on les enleve de la liste 
+        listearbre.remove(min1)
+        listearbre.remove(min2)
+        #creation d'un nouvel arbre avec T1 et T2 en ss arbre gauche et droit
+        T=Tree(None,min1.frequence+min2.frequence,min1,min2,None)
+        # on ajoute l'arbre constitue des sous arbres dans la liste
+        listearbre.append(T)
+    return(listearbre[0])
+    
