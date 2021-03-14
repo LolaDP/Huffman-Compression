@@ -1,0 +1,66 @@
+## etape 1 ##
+
+def alphabet (fichier_txt):
+    """methode qui renvoit la liste contenant les caractères présent dans le texte ansi que leur frequence d'apparition"""
+    #ouverture du ficher texte
+    fichier = open (fichier_txt,'r')
+    #creation d'une liste contenant chaque ligne du fichier
+    txt= fichier.readlines()
+    fichier.close 
+    #transformation de la liste en chaine afin de pouvoir utiliser count
+    txt=str(txt)
+    #creation de l'alphabet
+    alpha=[]
+    listcaract=[]
+    #recherche des caracteres du texte et de leur frequence
+    for caract in txt: 
+        if caract not in listcaract:
+            freq=txt.count(caract)
+            alpha.append([caract,freq])
+            listcaract.append(caract)
+    return(alpha)
+
+unAlpha=alphabet('textesimple.txt')
+
+def tri (alpha):
+    """methode permettant de trier la liste alpha par frequence croissante puis par ordre de codage des caractere ASCII"""
+    #creation de la futur liste triee selon les frequences
+    alphatrie=[]
+    while alpha!=[]:
+        #recherche de la frequence mini et de son couple [caratere,frequence]
+        fmin=alpha[0][1]
+        for i in alpha:
+            if i[1]<=fmin :
+                mini= i
+                fmin=i[1]
+        #ajout du couple a la liste trie
+        alphatrie.append(mini)
+        #print(alphatrie)
+        #suppression du couple dans l'alphabet non trie
+        alpha.remove(mini)
+    #la liste est triee par frequence croissante il faut maintenant la trier par ordre des caracteres ASCII
+    #creation de l'alphabet trie final
+    alphafinal=[]
+    while alphatrie !=[]:
+        #on fait la liste des elements ayant la meme frequence
+        liste=[alphatrie[0]]
+        alphatrie.remove(alphatrie[0])
+        if alphatrie!=[]:
+            while alphatrie[0][1]==liste[0][1]:
+                    #ajout du couple a la liste des element ayant la meme frequence
+                    liste.append(alphatrie[0])
+                    #suppression du couple dans l'alphabet trie par frequence
+                    alphatrie.remove(alphatrie[0])
+        #pour les elements de meme frequence on les tries par ordre croissant d'ascii puis on les ajoute a le liste finale
+        while liste !=[]:
+            #recherche le caractere d'ascii minimal et de son couple [caratere,frequence]
+            ASCIImin=ord(liste[0][0])
+            for k in liste :
+                if ord(k[0])<=ASCIImin:
+                    pluspetit=k
+                    ASCIImin=ord(k[0])
+            #ajout du couple a la liste trie finale
+            alphafinal.append(pluspetit)
+            #suppression du couple dans la liste des caracteres de meme frequence
+            liste.remove(pluspetit)
+    return(alphafinal)
