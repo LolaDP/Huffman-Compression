@@ -16,14 +16,6 @@ def codage(arbre):
     if arbre.right_child!=None:
         arbre.right_child.code=arbre.code+"1"
         codage(arbre.right_child)
-        
-def code(arbre):
-    """methode qui renvoit la liste des codes associes a leur noeud/caractere dans l'arbre"""
-    codage(T)
-    if arbre.left_child!=None or arbre.right_child!=None:
-        return[arbre.label,arbre.code]+[code(arbre.left_child)]+[code(arbre.right_child)]
-    else:
-        return [arbre.label,arbre.code]
     
 def label2code(arbre, caract):
     """methode qui renvoit le code associe a un noeud/caractere de l'arbre"""
