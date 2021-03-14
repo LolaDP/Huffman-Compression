@@ -1,0 +1,30 @@
+## etape4
+
+def taux_compression(fichier_txt):
+    """methode qui prend en argument le nom d'un fichier texte et qui renvoit le taux de compression """
+    #calcul du volume initial
+    #ouverture du ficher texte
+    fichier = open (fichier_txt,'r')
+    #creation d'une liste contenant chaque ligne du fichier
+    txt= fichier.readlines()
+    fichier.close 
+    #transformation de la liste en chaine 
+    txt=str(txt)
+    volume_init=len(txt)*8
+    #calcul du volume final
+    alpha=tri(alphabet(fichier_txt))
+    #liste des arbres associe a chaque caractere
+    listearbre=[]
+    for j in alpha :
+        listearbre.append(Tree(j[0],j[1],None,None,None))
+    #creation de l'arbre
+    T=creaArbre(listearbre)
+    #assossiation de son code binaire a chacun des caracteres
+    codage(T)
+    txt_code=""
+    for caract in txt:
+        txt_code+=str(label2code(T,caract)[0]) 
+    volume_final=len(txt_code)
+    tx=1-volume_final/volume_init
+    return(tx)
+        
