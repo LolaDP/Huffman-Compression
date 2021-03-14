@@ -1,0 +1,29 @@
+##etape 5##
+
+def nb_bit(fichier_txt):
+    #nombre de bit
+    nbB=0
+    #somme du nombre d'elements
+    diviseur=0
+    #creation de l'alphabet
+    alpha=alphabet(fichier_txt)
+    #triage de l'alphabet
+    alphatrie=tri(alpha)
+    #liste des arbres associe a chaque caractere
+    listearbre=[]
+    for i in alphatrie :
+        listearbre.append(Tree(i[0],i[1],None,None,None)) 
+    #creation de l'arbre de l'alphabet
+    T=creaArbre(listearbre)
+    #assossiation de son code binaire a chacun des caracteres
+    codage(T)
+    #pour chaque caractere du texte
+    for caract in alphatrie:
+        #print(label2code(T,caract[0][0]))
+        #le numerateur correspond a la somme des nombres de bit correspondant a un caractere multiplie par sa frequence d'apparition
+        nbB+=len(label2code(T,caract[0][0])[0])*label2code(T,caract[0][0])[1]
+        #le denominateur correspond a la somme du nombre d'element donc, comme chaque caractere n'apparait qu'une fois dans l'alphabet, c'est la somme des frequences 
+        diviseur+=label2code(T,caract[0][0])[1]
+        #print(diviseur, nbB, label2code(T,caract[0][0])[0],len(label2code(T,caract[0][0])[0]), label2code(T,caract[0][0])[1])
+    moyenne=nbB/diviseur
+    return(moyenne)
