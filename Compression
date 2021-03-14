@@ -1,0 +1,93 @@
+## etape 3 ##
+
+T=creaArbre(listearbre) 
+#print(T.right_child.right_child.label) 
+
+def codage(arbre):
+    """methode qui associe le code binaire associe a chaque noeud de l'arbre"""
+    #initialisation sur le noeud racine
+    if arbre.code==None:
+        arbre.code=""
+    #a chaque fois qu'on va a gauche dans l'arbre on rajoute un 0 au code du caractere
+    if arbre.left_child!=None:
+        arbre.left_child.code=arbre.code+"0"
+        codage(arbre.left_child)
+    #a chaque fois qu'on va a droite dans l'arbre on rajoute un 1 au code du caractere
+    if arbre.right_child!=None:
+        arbre.right_child.code=arbre.code+"1"
+        codage(arbre.right_child)
+        
+def code(arbre):
+    """methode qui renvoit la liste des codes associes a leur noeud/caractere dans l'arbre"""
+    codage(T)
+    if arbre.left_child!=None or arbre.right_child!=None:
+        return[arbre.label,arbre.code]+[code(arbre.left_child)]+[code(arbre.right_child)]
+    else:
+        return [arbre.label,arbre.code]
+    
+def label2code(arbre, caract):
+    """methode qui renvoit le code associe a un noeud/caractere de l'arbre"""
+    #associe les codes aux caractères dans l'arbre
+    codage(arbre)
+    #si la racine est l'etiquette on retourne son code
+    if arbre.label==caract:
+        return[arbre.code,arbre.frequence]
+    else :
+        if arbre.left_child!=None:
+            left=label2code(arbre.left_child,caract)
+        if arbre.right_child!=None:
+            right=label2code(arbre.right_child,caract)
+        if (arbre.left_child==None and arbre.right_child==None) or (left==0 and right==0):
+            return None
+        if left!=None:
+            return left
+        if right!=None:
+            return right
+        
+def compressage (fichier_txt):
+    """methode qui prend le fichier de texte et retourne un fichier texte contenant l'alphabet et le texte compresse"""
+    #creation du fichier txt contenant la description de l'alphabet
+    nom_f=str(fichier_txt[:-4])+"_freq.txt"
+    alpha=tri(alphabet(fichier_txt))
+    descr_alpha=open(nom_f,'w')
+    descr_alpha.write(str(len(alpha))+'\n')
+    for i in alpha :
+        descr_alpha.write(str(i[0])+" "+str(i[1])+'\n')
+    descr_alpha.close()
+    #creation du fichier du texte compresse
+    nom_c=str(fichier_txt[:-4])+"_comp.bin"
+    fichier_comp=open(nom_c,'w')
+    #liste des arbres associe a chaque caractere
+    listearbre=[]
+    for j in alpha :
+        listearbre.append(Tree(j[0],j[1],None,None,None))
+    #creation de l'arbre
+    T=creaArbre(listearbre)
+    #assossiation de son code binaire a chacun des caracteres
+    codage(T)
+    #ouverture du ficher texte
+    fichier = open (fichier_txt,'r')
+    #creation d'une liste contenant chaque ligne du fichier
+    txt= fichier.readlines()
+    fichier.close 
+    #transformation de la liste en chaine 
+    txt=str(txt)
+    txt_code=""
+    for caract in txt:
+        txt_code+=str(label2code(T,caract)[0]) 
+    #print(txt_code)
+    #oct va representer 1 octet et doit commencer par 0b
+    oct='0b'
+    #pour chaque bit de txt_code
+    for bit in txt_code:
+        #si oct ne represente pas encore un octet on lui rajoute le bit
+        if len(oct)<9:
+            oct+=str(bit)   
+        #lorsque oct represente un octet on le converti en entier binaire et on met son caractere ASCII correspondant dans fichier_comp
+        else:
+            #print(type(chr(int(oct,2))),chr(int(oct,2)),int(oct,2),oct)
+            fichier_comp.write(chr(int(oct,2)))
+            #on reinitialise oct a 0b pour pouvoir prendre l'octet suivant
+            oct='0b'
+    #print('test')
+    fichier_comp.close()
