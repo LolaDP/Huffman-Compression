@@ -36,7 +36,7 @@ def label2code(arbre, caract):
         if right!=None:
             return right
         
-def compressage (fichier_txt):
+def compression (fichier_txt):
     """methode qui prend le fichier de texte et retourne un fichier texte contenant l'alphabet et le texte compresse"""
     #creation du fichier txt contenant la description de l'alphabet
     nom_f=str(fichier_txt[:-4])+"_freq.txt"
@@ -81,5 +81,10 @@ def compressage (fichier_txt):
             fichier_comp.write(chr(int(oct,2)))
             #on reinitialise oct a 0b pour pouvoir prendre l'octet suivant
             oct='0b'
+    #si il reste des bits qui ne forment pas un octet on rajoute des 0 a la suite puis on le traite
+    if oct!="0b":
+        while len(oct)!=8:
+            oct+="0"
+        fichier_comp.write(chr(int(oct,2)))
     #print('test')
     fichier_comp.close()
